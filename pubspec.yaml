@@ -1,0 +1,107 @@
+name: passportapp
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.5 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  dotted_border: ^2.0.0+2
+  firebase_core: ^1.19.2
+  cloud_firestore: ^3.3.0
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/logo.png
+    - assets/images/appleIcon.png
+    - assets/images/googleIcon.png
+    - assets/images/heartIcon.png
+    - assets/images/searchIcon.png
+    - assets/images/notificationIcon.png
+    - assets/images/backButton.png
+    - assets/images/locationOnBoard.png
+    - assets/images/redeemIcon.png
+    - assets/images/saveIcon.png
+    - assets/images/unsaveIcon.png
+    - assets/images/shareIcon.png
+    - assets/images/deal_info.png
+    - assets/images/deal_info_bg.png
+    - assets/images/weather_sunny.png
+    - assets/images/img_alabama.png
+    - assets/images/img_alabama2.png
+    - assets/images/img_alabama3.png
+    - assets/images/img_alabama4.png
+    - assets/images/img_crabbucket.png
+    - assets/images/img_crabshack.png
+    - assets/images/img_dirtydons.png
+    - assets/images/img_dirtydons2.png
+    - assets/images/img_extremepizza.png
+    - assets/images/img_hooknbarrel.png
+    - assets/images/img_jurassic.png
+    - assets/images/img_jurassic2.png
+    - assets/images/img_mrseafood.png
+    - assets/images/img_skywheel.png
+    - assets/images/img_wonderworks.png
+    - assets/images/idea.png
+    - assets/images/goldPot.png
+    - assets/images/pizza1.png
+    - assets/images/pizza2.png
+    - assets/images/profilePic.png
+    - assets/images/pinLocation.png
+    - assets/images/pinLocation_outlined.png
+    - assets/images/account_info.png
+    - assets/images/account_deals.png
+    - assets/images/account_chat.png
+    - assets/images/account_preferences.png
+    - assets/images/account_notifications.png
+    - assets/images/filled_home.png
+    - assets/images/filled_search.png
+    - assets/images/filled_redeem.png
+    - assets/images/filled_profile.png
+    - assets/images/outlined_home.png
+    - assets/images/outlined_search.png
+    - assets/images/outlined_redeem.png
+    - assets/images/outlined_profile.png
+    - assets/images/todo_attractions.png
+    - assets/images/todo_beach.png
+    - assets/images/todo_transportation.png
+    - assets/images/todo_events.png
+    - assets/images/todo_family.png
+    - assets/images/todo_fishing.png
+    - assets/images/todo_golf.png
+    - assets/images/todo_lodging.png
+    - assets/images/todo_shopping.png
+    - assets/images/todo_shows.png
+    - assets/images/todo_watersport.png
+    - assets/images/todo_wellness.png
+    - assets/images/toeat_breakfast.png
+    - assets/images/toeat_brew.png
+    - assets/images/toeat_buffet.png
+    - assets/images/toeat_burgerwings.png
+    - assets/images/toeat_delivery.png
+    - assets/images/toeat_familydine.png
+    - assets/images/toeat_finedine.png
+    - assets/images/toeat_oceanfront.png
+    - assets/images/toeat_pizza.png
+    - assets/images/toeat_seafood.png
+    - assets/images/toeat_sportsbar.png
+    - assets/images/toeat_steak.png
+
+  fonts:
+    - family: Actor
+      fonts:
+        - asset: assets/fonts/Actor-Regular.ttf
+

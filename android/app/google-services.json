@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "16697676259",
+    "project_id": "passportapp-6d93d",
+    "storage_bucket": "passportapp-6d93d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16697676259:android:0c4554b0a77d2a8ca110d6",
+        "android_client_info": {
+          "package_name": "com.myrtle.passportapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "16697676259-2t74el7b94f318rkngd5brbn4gc1cleq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVbqZ0WxPNSv74UFBPegJePfnbATOeB2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "16697676259-2t74el7b94f318rkngd5brbn4gc1cleq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
