@@ -78,7 +78,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             SizedBox(height: screenHeight / 23,),
             GestureDetector(
               onTap: () {
-                // setState(() {
+               // setState(() {
                 //   screenState = 0;
                 // });
                 Navigator.of(context).pushReplacement(

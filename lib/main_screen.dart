@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
     late Widget body;
 
     switch(selectedScreen) {
-      case 0:   // Home TabView
+      case 0:
         body = HomeScreen(
           setStateAppBar: (v) => setState(() {appbarState = v;}),
         );
@@ -61,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
           appbarState = 0;
         });
         break;
-      case 1:   // Search TabView
+      case 1:
         body = SearchScreen(
           setStateMain: (v) => setState(() {selectedScreen = v;}),
           setTitle: (v) => setState(() {callBackTitle = v;}),
@@ -71,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
           appbarState = 0;
         });
         break;
-      case 2:   // Redeem TabView
+      case 2:
         body = RedeemScreen(
           setStateAppBar: (value) {
             setState(() {
@@ -94,28 +94,28 @@ class _MainScreenState extends State<MainScreen> {
           appbarState = 0;
         });
         break;
-      case 3:   // Profile TabView
+      case 3:
         body = const ProfileScreen();
         setState(() {
           appBarText = Attributes.fullName;
           appbarState = 0;
         });
         break;
-      case 4:   //    Search/To-do Screen
+      case 4:
         body = TodoScreen(title: callBackTitle,);
         setState(() {
           appBarText = callBackTitle;
           appbarState = 1;
         });
         break;
-      case 5:   // Search/To-eat Screen
+      case 5:
         body = ToeatScreen(title: callBackTitle,);
         setState(() {
           appBarText = callBackTitle;
           appbarState = 1;
         });
         break;
-      case 6:   // Offer Screen
+      case 6:
         body =  OfferScreen(
           title: offersTitle,
           label1: offersLabel1,
