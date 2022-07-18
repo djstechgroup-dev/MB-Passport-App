@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Myrtle Beach Passport',
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

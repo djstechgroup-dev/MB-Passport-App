@@ -21,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
+            builder: (context) => const OnBoardingScreen(),
         ),
       );
     });
@@ -29,7 +30,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
-    // App logo arranging into center
 
     return Scaffold(
       body: Center(
