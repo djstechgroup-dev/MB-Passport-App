@@ -4,7 +4,8 @@ import 'package:passportapp/attributes.dart';
 class SearchScreen extends StatefulWidget {
   final ValueSetter setStateMain;
   final ValueSetter setTitle;
-  const SearchScreen({Key? key, required this.setStateMain, required this.setTitle}) : super(key: key);
+  final int categoryState;
+  const SearchScreen({Key? key, required this.setStateMain, required this.setTitle, this.categoryState = 0}) : super(key: key);
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -14,6 +15,13 @@ class _SearchScreenState extends State<SearchScreen> {
   double screenWidth = 0;
   double screenHeight = 0;
   int screenState = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    screenState = widget.categoryState;
+  }
 
   @override
   Widget build(BuildContext context) {

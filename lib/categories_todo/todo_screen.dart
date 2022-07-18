@@ -4,7 +4,9 @@ import 'package:passportapp/attributes.dart';
 
 class TodoScreen extends StatefulWidget {
   final String title;
-  const TodoScreen({Key? key, required this.title}) : super(key: key);
+  final ValueSetter setStateMain;
+  final ValueSetter setDeal;
+  const TodoScreen({Key? key, required this.title, required this.setStateMain, required this.setDeal}) : super(key: key);
 
   @override
   State<TodoScreen> createState() => _TodoScreenState();
@@ -32,34 +34,69 @@ class _TodoScreenState extends State<TodoScreen> {
               child: Row(
                 children: [
                   SizedBox(width: screenWidth / 20,),
-                  _coupons(
-                    "img_alabama2",
-                    "The Alabama\n     Theatre",
-                    "\$5 OFF Admission",
+                  GestureDetector(
+                    onTap: () {
+                      Feedback.forTap(context);
+                      widget.setStateMain(6);
+                      widget.setDeal("deal2");
+                    },
+                    child: _coupons(
+                      "img_alabama2",
+                      "The Alabama\n     Theatre",
+                      "\$5 OFF Admission",
+                    ),
                   ),
-                  _coupons(
-                    "img_wonderworks",
-                    "Extreme\nPizza",
-                    "Free Drinks",
+                  GestureDetector(
+                    onTap: () {
+                      Feedback.forTap(context);
+                      widget.setStateMain(6);
+                      widget.setDeal("deal4");
+                    },
+                    child: _coupons(
+                      "img_wonderworks",
+                      "Extreme\nPizza",
+                      "Free Drinks",
+                    ),
                   ),
                 ],
               ),
             ),
             _headings("All ${widget.title} Deals"),
-            _deals(
-              "img_alabama3",
-              "The Alabama Theatre\n",
-              "\$5 OFF Admission\nExpires 3/10",
+            GestureDetector(
+              onTap: () {
+                Feedback.forTap(context);
+                widget.setStateMain(6);
+                widget.setDeal("deal2");
+              },
+              child: _deals(
+                "img_alabama3",
+                "The Alabama Theatre\n",
+                "\$5 OFF Admission\nExpires 3/10",
+              ),
             ),
-            _deals(
-              "img_jurassic2",
-              "Jurassic Miniature Golf\n",
-              "5\$ Family Round\nExpires 4/15",
+            GestureDetector(
+              onTap: () {
+                Feedback.forTap(context);
+                widget.setStateMain(6);
+                widget.setDeal("deal3");
+              },
+              child: _deals(
+                "img_jurassic2",
+                "Jurassic Miniature Golf\n",
+                "5\$ Family Round\nExpires 4/15",
+              ),
             ),
-            _deals(
-              "img_skywheel",
-              "Myrtle Beach Skywheel\n",
-              "Kids Ride Free!\nExpires 4/6",
+            GestureDetector(
+              onTap: () {
+                Feedback.forTap(context);
+                widget.setStateMain(6);
+                widget.setDeal("deal5");
+              },
+              child: _deals(
+                "img_skywheel",
+                "Myrtle Beach Skywheel\n",
+                "Kids Ride Free!\nExpires 4/6",
+              ),
             ),
           ],
         ),

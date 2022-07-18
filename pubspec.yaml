@@ -14,6 +14,10 @@ dependencies:
   dotted_border: ^2.0.0+2
   firebase_core: ^1.19.2
   cloud_firestore: ^3.3.0
+  firebase_auth: ^3.4.2
+  google_sign_in: ^5.4.0
+  location: ^4.4.0
+  geocoding: ^2.0.4
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
@@ -29,6 +33,7 @@ flutter:
     - assets/images/appleIcon.png
     - assets/images/googleIcon.png
     - assets/images/heartIcon.png
+    - assets/images/heartIcon_grey.png
     - assets/images/searchIcon.png
     - assets/images/notificationIcon.png
     - assets/images/backButton.png

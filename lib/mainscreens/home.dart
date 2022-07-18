@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:passportapp/attributes.dart';
 
 class HomeScreen extends StatefulWidget {
-  final ValueSetter setStateAppBar;
-  const HomeScreen({Key? key, required this.setStateAppBar}) : super(key: key);
-
+  final ValueSetter setStateMain;
+  final ValueSetter setStateSearch;
+  const HomeScreen({Key? key, required this.setStateMain, required this.setStateSearch}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -125,10 +125,22 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _shortcuts("Dining"),
-                  _shortcuts("Category"),
-                  _shortcuts("Near Me"),
-                  _shortcuts("Most Popular"),
+                  _shortcuts("Dining", () {
+                    Feedback.forTap(context);
+                    widget.setStateMain(1);
+                    widget.setStateSearch(1);
+                  }),
+                  _shortcuts("Category", () {
+                    Feedback.forTap(context);
+                    widget.setStateMain(1);
+                    widget.setStateSearch(0);
+                  }),
+                  _shortcuts("Near Me", () {
+                    Feedback.forTap(context);
+                  }),
+                  _shortcuts("Most Popular", () {
+                    Feedback.forTap(context);
+                  }),
                 ],
               ),
             ),
@@ -167,26 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: screenWidth / 20,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Favorite Business",
-                    style: TextStyle(
-                      fontFamily: "Actor",
-                      fontSize: screenHeight / 35,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  _underlineText("See All"),
-                ],
-              ),
-            ),
+            _heading("Favorite Businesses"),
             Container(
               margin: EdgeInsets.only(
                 top: screenHeight / 50,
@@ -210,8 +203,23 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
+  
   Widget _heading(String text) {
+    return Padding(
+      padding: EdgeInsets.only(
+        right: screenWidth / 20,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _headingText(text),
+          _underlineText("See All"),
+        ],
+      ),
+    );
+  }
+
+  Widget _headingText(String text) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: screenWidth / 20,
@@ -392,22 +400,25 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _shortcuts(String text) {
-    return Container(
-      height: screenHeight / 22,
-      padding: EdgeInsets.symmetric(
-        horizontal: screenWidth / 25,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-        color: const Color(0xFFEFEFEF),
-      ),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontFamily: "Actor",
-            fontSize: screenHeight / 55,
+  Widget _shortcuts(String text, VoidCallback function) {
+    return GestureDetector(
+      onTap: function,
+      child: Container(
+        height: screenHeight / 22,
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth / 25,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: const Color(0xFFEFEFEF),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontFamily: "Actor",
+              fontSize: screenHeight / 55,
+            ),
           ),
         ),
       ),

@@ -6,7 +6,7 @@ import 'package:passportapp/mainscreens/home.dart';
 import 'package:passportapp/mainscreens/profile.dart';
 import 'package:passportapp/mainscreens/redeem.dart';
 import 'package:passportapp/mainscreens/search.dart';
-import 'package:passportapp/offerscreen.dart';
+import 'package:passportapp/deal_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -21,22 +21,12 @@ class _MainScreenState extends State<MainScreen> {
   double appbarHeight = 0;
   int selectedScreen = 0;
   int appbarState = 0;
+  int searchState = 0;
+  int backButtonState = 0;
   TextEditingController searchController = TextEditingController();
 
   String callBackTitle = "";
-
-  //OfferScreen variables
-  String offersTitle = "";
-  String offersLabel1 = "";
-  bool offersLabel2 = false;
-  String offersOpenTime = "";
-  String offersCoupon = "";
-  int offersUsed = 0;
-  int offersRemaining = 0;
-  double offersDistance = 0;
-  String offersLocation = "";
-  String offersDescription = "";
-
+  String deal = "";
   String appBarText = "Discover Deals";
 
   List<String> iconAssetsFilled = ["filled_home", "filled_search", "filled_redeem", "filled_profile"];
@@ -54,44 +44,36 @@ class _MainScreenState extends State<MainScreen> {
     switch(selectedScreen) {
       case 0:
         body = HomeScreen(
-          setStateAppBar: (v) => setState(() {appbarState = v;}),
+          setStateMain: (v) => setState(() {selectedScreen = v;}),
+          setStateSearch: (v) => setState(() {searchState = v;}),
         );
         setState(() {
           appBarText = "Discover Deals";
           appbarState = 0;
+          backButtonState = 0;
         });
         break;
       case 1:
         body = SearchScreen(
           setStateMain: (v) => setState(() {selectedScreen = v;}),
           setTitle: (v) => setState(() {callBackTitle = v;}),
+          categoryState: searchState,
         );
         setState(() {
           appBarText = "Search Deals";
           appbarState = 0;
+          backButtonState = 0;
         });
         break;
       case 2:
         body = RedeemScreen(
-          setStateAppBar: (value) {
-            setState(() {
-              appbarState = value;
-            });
-          },
-          setTitle: (v) => setState(() {offersTitle = v;}),
-          setLabel1: (v) => setState(() {offersLabel1 = v;}),
-          setLabel2: (v) => setState(() {offersLabel2 = v;}),
-          setOpenTime: (v) => setState(() {offersOpenTime = v;}),
-          setCoupon: (v) => setState(() {offersCoupon = v;}),
-          setUsed: (v) => setState(() {offersUsed = v;}),
-          setRemaining: (v) => setState(() {offersRemaining = v;}),
-          setDistance: (v) => setState(() {offersDistance = v;}),
-          setLocation: (v) => setState(() {offersLocation = v;}),
-          setDescription: (v) => setState(() {offersDescription = v;}),
+          setStateMain: (v) => setState(() {selectedScreen = v;}),
+          setDeal: (v) => setState(() {deal = v;}),
         );
         setState(() {
           appBarText = "Redeem";
           appbarState = 0;
+          backButtonState = 0;
         });
         break;
       case 3:
@@ -99,34 +81,36 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           appBarText = Attributes.fullName;
           appbarState = 0;
+          backButtonState = 0;
         });
         break;
       case 4:
-        body = TodoScreen(title: callBackTitle,);
+        body = TodoScreen(
+          title: callBackTitle,
+          setStateMain: (v) => setState(() {selectedScreen = v;}),
+          setDeal: (v) => setState(() {deal = v;}),
+        );
         setState(() {
           appBarText = callBackTitle;
           appbarState = 1;
+          backButtonState = 1;
         });
         break;
       case 5:
-        body = ToeatScreen(title: callBackTitle,);
+        body = ToeatScreen(
+          title: callBackTitle,
+          setStateMain: (v) => setState(() {selectedScreen = v;}),
+          setDeal: (v) => setState(() {deal = v;}),
+        );
         setState(() {
           appBarText = callBackTitle;
           appbarState = 1;
+          backButtonState = 2;
         });
         break;
       case 6:
-        body =  OfferScreen(
-          title: offersTitle,
-          label1: offersLabel1,
-          label2: offersLabel2,
-          openTime: offersOpenTime,
-          coupon: offersCoupon,
-          used: offersUsed,
-          remaining: offersRemaining,
-          distance: offersDistance,
-          location: offersLocation,
-          description: offersDescription,
+        body =  DealScreen(
+          deal: deal,
         );
         setState(() {
           appBarText = "Offers";
@@ -157,7 +141,7 @@ class _MainScreenState extends State<MainScreen> {
                 onTap: () {
                   Feedback.forTap(context);
                   setState(() {
-                    selectedScreen = 2;
+                    selectedScreen = backButtonState == 0 ? 2 : (backButtonState == 1 ? 4 : 5);
                   });
                 },
                 child: Image.asset(

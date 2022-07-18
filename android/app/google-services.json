@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "16697676259-0bi23nk1s7ub7oug5tmb7sb7bj8n2fvi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myrtle.passportapp",
+            "certificate_hash": "1c4ef3f3e04ad67d0ef1ba6b44eacb361e95253a"
+          }
+        },
+        {
           "client_id": "16697676259-2t74el7b94f318rkngd5brbn4gc1cleq.apps.googleusercontent.com",
           "client_type": 3
         }

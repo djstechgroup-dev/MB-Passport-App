@@ -4,7 +4,9 @@ import 'package:passportapp/attributes.dart';
 
 class ToeatScreen extends StatefulWidget {
   final String title;
-  const ToeatScreen({Key? key, required this.title}) : super(key: key);
+  final ValueSetter setStateMain;
+  final ValueSetter setDeal;
+  const ToeatScreen({Key? key, required this.title, required this.setStateMain, required this.setDeal}) : super(key: key);
 
   @override
   State<ToeatScreen> createState() => _ToeatScreenState();
@@ -31,34 +33,69 @@ class _ToeatScreenState extends State<ToeatScreen> {
               child: Row(
                 children: [
                   SizedBox(width: screenWidth / 20,),
-                  _coupons(
-                    "img_dirtydons",
-                    "Dirty Don’s\nOyster Bar & Grill",
-                    "BOGO Lunch Specials",
+                  GestureDetector(
+                    onTap: () {
+                      Feedback.forTap(context);
+                      widget.setStateMain(6);
+                      widget.setDeal("deal1");
+                    },
+                    child: _coupons(
+                      "img_dirtydons",
+                      "Dirty Don’s\nOyster Bar & Grill",
+                      "BOGO Lunch Specials",
+                    ),
                   ),
-                  _coupons(
-                    "img_crabbucket",
-                    "Crab\nBucket",
-                    "Free Crabs",
+                  GestureDetector(
+                    onTap: () {
+                      Feedback.forTap(context);
+                      widget.setStateMain(6);
+                      widget.setDeal("deal6");
+                    },
+                    child: _coupons(
+                      "img_crabbucket",
+                      "Crab\nBucket",
+                      "Free Crabs",
+                    ),
                   ),
                 ],
               ),
             ),
             _headings("All ${widget.title} Deals"),
-            _deals(
-              "img_dirtydons",
-              "Dirty Don’s Oyster\nBar & Grill",
-              "BOGO Lunch Specials\nExpires 3/10",
+            GestureDetector(
+              onTap: () {
+                Feedback.forTap(context);
+                widget.setStateMain(6);
+                widget.setDeal("deal1");
+              },
+              child: _deals(
+                "img_dirtydons",
+                "Dirty Don’s Oyster\nBar & Grill",
+                "BOGO Lunch Specials\nExpires 3/10",
+              ),
             ),
-            _deals(
-              "img_crabshack",
-              "Joe’s Crab Shack\n",
-              "Free Appetizer with Entree\nExpires 4/15",
+            GestureDetector(
+              onTap: () {
+                Feedback.forTap(context);
+                widget.setStateMain(6);
+                widget.setDeal("deal6");
+              },
+              child: _deals(
+                "img_crabshack",
+                "Joe’s Crab Shack\n",
+                "Free Appetizer with Entree\nExpires 4/15",
+              ),
             ),
-            _deals(
-              "img_mrseafood",
-              "Mr. Fish Seafood Grill\n",
-              "\$3 OFF Appetizers\nExpires 5/5",
+            GestureDetector(
+              onTap: () {
+                Feedback.forTap(context);
+                widget.setStateMain(6);
+                widget.setDeal("deal7");
+              },
+              child: _deals(
+                "img_mrseafood",
+                "Mr. Fish Seafood Grill\n",
+                "\$3 OFF Appetizers\nExpires 5/5",
+              ),
             ),
           ],
         ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:passportapp/attributes.dart';
 import 'package:passportapp/main_screen.dart';
-
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
 
@@ -12,7 +11,7 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   double screenWidth = 0;
   double screenHeight = 0;
-  int screenState = 0;    // Status Variable of current focused screen between Sign in and Location access Screen
+  int screenState = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +21,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     late Widget body;
 
     switch(screenState) {
-      // Social Sign in Screen
       case 0:
         body = Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _bigImage("logo.png", screenWidth / 1.5),
-            // Sign in w/ Google
             GestureDetector(
               onTap: () {
                 Feedback.forTap(context);
@@ -39,7 +36,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               },
               child: _button("googleIcon.png", "Continue with Google"),
             ),
-            // Sign in w/ Apple
             SizedBox(height: screenHeight / 20,),
             GestureDetector(
               onTap: () {
@@ -55,7 +51,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           ],
         );
         break;
-      // Location access Screen
       case 1:
         body = Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -63,24 +58,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             _text1("Location Services"),
             _text2("Myrtle Beach Passport is designed to use your location to enhance your experience.",),
             _bigImage("locationOnBoard.png", screenWidth / 2.3),
-            // Enable button
             GestureDetector(
               onTap: () {
+                Feedback.forTap(context);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => const MainScreen(),   // Go to Home Screen
+                    builder: (context) => const MainScreen(),
                   ),
                 );
               },
               child: _button("n", "Enable Location"),
             ),
-            // Skip button
             SizedBox(height: screenHeight / 23,),
             GestureDetector(
               onTap: () {
-               // setState(() {
-                //   screenState = 0;
-                // });
+                Feedback.forTap(context);
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => const MainScreen(),
@@ -102,6 +94,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       body: SizedBox(
         width: screenWidth,
         child: body,
+      ),
+    );
+  }
+
+  void showSnackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          text,
+        ),
       ),
     );
   }

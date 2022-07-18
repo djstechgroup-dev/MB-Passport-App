@@ -17,12 +17,10 @@ class _SplashScreenState extends State<SplashScreen> {
     _navigateNext();
   }
 
-  // Navigate to next Screen
   Future _navigateNext() async {
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-            builder: (context) => const OnBoardingScreen(),   // Go to OnBoardScreen
         ),
       );
     });
@@ -32,6 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
     // App logo arranging into center
+
     return Scaffold(
       body: Center(
         child: Image.asset(

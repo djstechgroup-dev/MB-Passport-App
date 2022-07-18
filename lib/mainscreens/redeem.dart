@@ -3,30 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:passportapp/attributes.dart';
 
 class RedeemScreen extends StatefulWidget {
-  final ValueSetter setStateAppBar;
-  final ValueSetter setTitle;
-  final ValueSetter setLabel1;
-  final ValueSetter setLabel2;
-  final ValueSetter setOpenTime;
-  final ValueSetter setCoupon;
-  final ValueSetter setUsed;
-  final ValueSetter setRemaining;
-  final ValueSetter setDistance;
-  final ValueSetter setLocation;
-  final ValueSetter setDescription;
+  final ValueSetter setStateMain;
+  final ValueSetter setDeal;
 
   const RedeemScreen({Key? key,
-    required this.setStateAppBar,
-    required this.setTitle,
-    required this.setLabel1,
-    required this.setLabel2,
-    required this.setOpenTime,
-    required this.setCoupon,
-    required this.setUsed,
-    required this.setRemaining,
-    required this.setDistance,
-    required this.setLocation,
-    required this.setDescription
+    required this.setStateMain,
+    required this.setDeal,
   }) : super(key: key);
 
   @override
@@ -55,15 +37,29 @@ class _RedeemScreenState extends State<RedeemScreen> {
               child: Row(
                 children: [
                   SizedBox(width: screenWidth / 20,),
-                  _coupons(
-                    "img_dirtydons",
-                    "Dirty Don’s\nOyster Bar & Grill",
-                    "BOGO Lunch Specials",
+                  GestureDetector(
+                    onTap: () {
+                      Feedback.forTap(context);
+                      widget.setStateMain(6);
+                      widget.setDeal("deal1");
+                    },
+                    child: _coupons(
+                      "img_dirtydons",
+                      "Dirty Don’s\nOyster Bar & Grill",
+                      "BOGO Lunch Specials",
+                    ),
                   ),
-                  _coupons(
-                    "img_extremepizza",
-                    "Extreme\nPizza",
-                    "Free Drinks",
+                  GestureDetector(
+                    onTap: () {
+                      Feedback.forTap(context);
+                      widget.setStateMain(6);
+                      widget.setDeal("deal4");
+                    },
+                    child: _coupons(
+                      "img_extremepizza",
+                      "Extreme\nPizza",
+                      "Free Drinks",
+                    ),
                   ),
                 ],
               ),
@@ -72,44 +68,33 @@ class _RedeemScreenState extends State<RedeemScreen> {
             GestureDetector(
               onTap: () {
                 Feedback.forTap(context);
-                widget.setStateAppBar(6);
-                widget.setTitle("Dirty Don’s Oyster\nBar & Grill");
-                widget.setLabel1("Restaurant");
-                widget.setLabel2(true);
-                widget.setOpenTime("10am-8pm");
-                widget.setCoupon("BOGO Lunch Specials");
-                widget.setUsed(21);
-                widget.setRemaining(9);
-                widget.setDistance(1.6);
-                widget.setLocation("4750 Hwy 17 S, North Myrtle Beach, SC 29582");
-                widget.setDescription("Our “Key West” style restaurant features everything from fresh oysters on the half shell and nearly famous hot wings to mouth-watering burgers and perfectly grilled steaks. We offer a huge assortment of sandwiches, and both indoor and outdoor dining are available.");
-              },
+                widget.setStateMain(6);
+                widget.setDeal("deal1");
+                },
               child: _savedDeals(
                 "img_dirtydons",
                 "Dirty Don’s Oyster\nBar & Grill",
                 "Bogo Lunch Specials\nExpires 3/10",
               ),
             ),
-            _savedDeals(
-              "img_jurassic2",
-              "Jurassic Miniature Golf\n",
-              "5\$ Family Round\nExpires 4/15",
+            GestureDetector(
+              onTap: () {
+                Feedback.forTap(context);
+                widget.setStateMain(6);
+                widget.setDeal("deal3");
+              },
+              child: _savedDeals(
+                "img_jurassic2",
+                "Jurassic Miniature Golf\n",
+                "5\$ Family Round\nExpires 4/15",
+              ),
             ),
             GestureDetector(
               onTap: () {
                 Feedback.forTap(context);
-                widget.setStateAppBar(6);
-                widget.setTitle("The Alabama\nTheatre");
-                widget.setLabel1("Restaurant");
-                widget.setLabel2(true);
-                widget.setOpenTime("10am-8pm");
-                widget.setCoupon("BOGO Lunch Specials");
-                widget.setUsed(21);
-                widget.setRemaining(9);
-                widget.setDistance(1.6);
-                widget.setLocation("4750 Hwy 17 S, North Myrtle Beach, SC 29582");
-                widget.setDescription("Since 1993 Alabama Theatre has been entertaining locals and tourists with the grandest variety show on the Grand Strand. Get ready for toe-tapping beats, breath-taking acrobatics, and side-splitting comedy.");
-              },
+                widget.setStateMain(6);
+                widget.setDeal("deal2");
+               },
               child: _savedDeals(
                 "img_alabama",
                 "The Alabama Theatre\n",
