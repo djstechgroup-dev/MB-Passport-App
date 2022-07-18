@@ -1,6 +1,7 @@
 # passportapp
 
-A new Flutter project.
+Myrtle Beach Passport customer app.
+General user app version for browsing business, deals or events and saving/redeeming/sharing then.
 
 ## Getting Started
 
