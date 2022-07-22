@@ -1,6 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:passportapp/attributes.dart';
 import 'package:passportapp/main_screen.dart';
+import 'package:passportapp/services/auth_service.dart';
+import 'package:passportapp/services/location_service.dart';
+import 'package:passportapp/services/snackbar_service.dart';
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
 
@@ -12,6 +19,22 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   double screenWidth = 0;
   double screenHeight = 0;
   int screenState = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfUserAvailable();
+  }
+
+  void checkIfUserAvailable() {
+    AuthService().checkUserAvailable().then((value) {
+      if(value == true) {
+        setState(() {
+          screenState = 1;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +53,23 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             GestureDetector(
               onTap: () {
                 Feedback.forTap(context);
-                setState(() {
-                  screenState = 1;
-                });
+                try {
+                  User? user;
+                  AuthService().googleSignIn().then((value) async {
+                    user = value;
+
+                    await FirebaseFirestore.instance.collection("Users").doc(user?.uid).set({
+                      'email': user?.email,
+                      'name': user?.displayName,
+                    });
+                  });
+
+                  setState(() {
+                    screenState = 1;
+                  });
+                } catch(e) {
+                  ShowCustomSnackBar().show(context, "Failed.");
+                }
               },
               child: _button("googleIcon.png", "Continue with Google"),
             ),
@@ -61,11 +98,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             GestureDetector(
               onTap: () {
                 Feedback.forTap(context);
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const MainScreen(),
-                  ),
-                );
+                try {
+                  LocationService().getLocation().then((value) {
+                    List<Placemark> placemark = value;
+
+                    print(placemark[0].street);
+                    print(placemark[0].country);
+                  });
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(),
+                    ),
+                  );
+                } catch(e) {
+                  ShowCustomSnackBar().show(context, "Something is wrong!");
+                }
               },
               child: _button("n", "Enable Location"),
             ),
