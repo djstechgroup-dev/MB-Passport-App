@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:passportapp/attributes.dart';
 import 'package:passportapp/main_screen.dart';
 import 'package:passportapp/services/auth_service.dart';
+import 'package:passportapp/services/dialog_service.dart';
 import 'package:passportapp/services/location_service.dart';
 import 'package:passportapp/services/snackbar_service.dart';
 class OnBoardingScreen extends StatefulWidget {
@@ -19,6 +18,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   double screenWidth = 0;
   double screenHeight = 0;
   int screenState = 0;
+  late BuildContext dialogContext;
 
   @override
   void initState() {
@@ -58,15 +58,28 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   AuthService().googleSignIn().then((value) async {
                     user = value;
 
-                    await FirebaseFirestore.instance.collection("Users").doc(user?.uid).set({
-                      'email': user?.email,
-                      'name': user?.displayName,
-                    });
+                    AuthService().saveUserData(user);
                   });
 
                   setState(() {
                     screenState = 1;
                   });
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext dialog) {
+                      dialogContext = dialog;
+                      return CustomDialog(
+                        title: "Congratulations",
+                        description: "Log in success! You are now a customer!",
+                        buttonText: "Continue",
+                        tapFunction: () {
+                          Feedback.forTap(context);
+                          Navigator.pop(dialogContext);
+                        },
+                      );
+                    },
+                  );
                 } catch(e) {
                   ShowCustomSnackBar().show(context, "Failed.");
                 }
