@@ -2,8 +2,8 @@
     package="com.myrtle.passportapp">
    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="passportapp"
-        android:name="${applicationName}"
+        android:label="Myrtle Beach Passport"
+        android:name="${applicationNameh}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
