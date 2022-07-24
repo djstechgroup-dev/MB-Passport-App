@@ -3,9 +3,10 @@ import 'dart:ui';
 class Attributes {
   static String username = "Stuart";
   static String fullName = "Stuart Butler";
+  static String favoriteBusiness = " ";
   static int unseenNotification = 3;
-  static int offersRedeemed = 14;
-  static int earnedSavings = 250;
+  static int offersRedeemed = -1;
+  static int earnedSavings = -1;
   static Color blue = const Color(0xFF18469D);
   static Color lightBlue = const Color(0xFFE0F5FC);
   static Color yellow = const Color(0xFFFFD75B);
