@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:passportapp/attributes.dart';
 
@@ -16,6 +18,28 @@ class _HomeScreenState extends State<HomeScreen> {
   double screenHeight = 0;
 
   @override
+  void initState() {
+    super.initState();
+    if(Attributes.offersRedeemed == -1) {
+      getData();
+    }
+  }
+
+  void getData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(user?.uid)
+        .get();
+
+    setState(() {
+      Attributes.offersRedeemed = snap['redeemed'];
+      Attributes.earnedSavings = snap['savings'];
+      Attributes.favoriteBusiness = snap['favorite'];
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
@@ -24,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: screenHeight / 70,),
@@ -146,56 +171,77 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             _heading("Offers Near Me"),
             Container(
+              height: screenHeight / 2.3,
               margin: EdgeInsets.only(
                 top: screenHeight / 50,
                 bottom: screenHeight / 50,
                 left: screenWidth / 20,
               ),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _offer(
-                      "img_alabama",
-                      "Alabama Theatre",
-                      "Entertainment",
-                      "3-5 miles",
-                      23,
-                      2,
-                      "\$5 OFF the price of admission",
-                    ),
-                    const SizedBox(width: 16,),
-                    _offer(
-                      "img_jurassic",
-                      "Jurassic Mini Golf",
-                      "Attraction",
-                      "3-5 miles",
-                      56,
-                      5,
-                      "Free Drinks with purchase of a round",
-                    ),
-                    const SizedBox(width: 16,),
-                  ],
-                ),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection("Deals").snapshots(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    final snap = snapshot.data!.docs;
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      primary: false,
+                      shrinkWrap: true,
+                      itemCount: snap.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.only(right: 12),
+                          child: _deal(
+                            snap[index]['imageURL'],
+                            snap[index]['businessName'],
+                            snap[index]['category'],
+                            "3-5 miles",
+                            snap[index]['dealUsed'],
+                            snap[index]['dealTotal'] - snap[index]['dealUsed'],
+                            snap[index]['tagline'],
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                },
               ),
             ),
             _heading("Favorite Businesses"),
             Container(
+              height: screenHeight / 4.5,
               margin: EdgeInsets.only(
                 top: screenHeight / 50,
                 bottom: screenHeight / 50,
                 left: screenWidth / 20,
               ),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _imageClip("pizza2"),
-                    const SizedBox(width: 16,),
-                    _imageClip("pizza1"),
-                    const SizedBox(width: 16,),
-                  ],
-                ),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection("Deals").snapshots(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    final snap = snapshot.data!.docs;
+                    return ListView.builder(
+                      clipBehavior: Clip.none,
+                      scrollDirection: Axis.horizontal,
+                      primary: false,
+                      shrinkWrap: true,
+                      itemCount: snap.length,
+                      itemBuilder: (context, index) {
+                        if(Attributes.favoriteBusiness.contains(snap[index]['businessName'])) {
+                          return Container(
+                            margin: const EdgeInsets.only(right: 12),
+                            child: _imageClip(snap[index]['imageURL']),
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    );
+                  } else {
+                    return const SizedBox();
+                  }
+                },
               ),
             ),
           ],
@@ -236,8 +282,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _offer(String image, String title, String label1, String label2, int used, int remaining, String bonus) {
+  Widget _deal(
+      String image,
+      String businessName,
+      String category,
+      String distance,
+      int used,
+      int remaining,
+      String tagline,
+  ) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _imageClip(image),
         Padding(
@@ -245,7 +301,7 @@ class _HomeScreenState extends State<HomeScreen> {
             vertical: 8,
           ),
           child: Text(
-            title,
+            businessName,
             style: TextStyle(
               fontFamily: "Actor",
               fontSize: screenHeight / 40,
@@ -253,43 +309,44 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _labelOffers(0, label1),
+            _labelOffers(0, category),
             const SizedBox(width: 8,),
-            _labelOffers(1, label2),
+            _labelOffers(1, distance),
           ],
         ),
         Container(
-            height: screenHeight / 35,
-            margin: const EdgeInsets.symmetric(
-              vertical: 4,
-            ),
-            padding: const EdgeInsets.only(
-              top: 2,
-              left: 15,
-              right: 15,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Attributes.lightBlue,
-            ),
-            child: RichText(
-              text: TextSpan(
-                  text: "Used $used times today, ",
-                  children: [
-                    TextSpan(
-                      text: "$remaining remaining",
-                      style: const TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
-                  style: TextStyle(
-                    fontFamily: "Actor",
-                    color: Attributes.blue,
-                  )
+          height: screenHeight / 35,
+          margin: const EdgeInsets.symmetric(
+            vertical: 4,
+          ),
+          padding: const EdgeInsets.only(
+            top: 2,
+            left: 15,
+            right: 15,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: Attributes.lightBlue,
+          ),
+          child: RichText(
+            text: TextSpan(
+              text: "Used $used times today, ",
+              children: [
+                TextSpan(
+                  text: "$remaining remaining",
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+              style: TextStyle(
+                fontFamily: "Actor",
+                color: Attributes.blue,
               ),
-            )
+            ),
+          ),
         ),
         DottedBorder(
           dashPattern: const [6, 3, 6, 3],
@@ -308,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: Center(
               child: Text(
-                bonus,
+                tagline,
                 style: TextStyle(
                   fontFamily: "Actor",
                   fontSize: screenHeight / 50,
@@ -335,8 +392,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Image.asset(
-          "assets/images/$image.png",
+        child: Image.network(
+          image,
           fit: BoxFit.fitHeight,
           width: screenWidth / 1.6,
         ),
