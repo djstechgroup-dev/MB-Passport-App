@@ -80,30 +80,30 @@ flutter:
     - assets/images/outlined_search.png
     - assets/images/outlined_redeem.png
     - assets/images/outlined_profile.png
-    - assets/images/todo_attractions.png
-    - assets/images/todo_beach.png
-    - assets/images/todo_transportation.png
-    - assets/images/todo_events.png
-    - assets/images/todo_family.png
-    - assets/images/todo_fishing.png
-    - assets/images/todo_golf.png
-    - assets/images/todo_lodging.png
-    - assets/images/todo_shopping.png
-    - assets/images/todo_shows.png
-    - assets/images/todo_watersport.png
-    - assets/images/todo_wellness.png
-    - assets/images/toeat_breakfast.png
-    - assets/images/toeat_brew.png
-    - assets/images/toeat_buffet.png
-    - assets/images/toeat_burgerwings.png
-    - assets/images/toeat_delivery.png
-    - assets/images/toeat_familydine.png
-    - assets/images/toeat_finedine.png
-    - assets/images/toeat_oceanfront.png
-    - assets/images/toeat_pizza.png
-    - assets/images/toeat_seafood.png
-    - assets/images/toeat_sportsbar.png
-    - assets/images/toeat_steak.png
+    - assets/images/categories/attractions.png
+    - assets/images/categories/beach.png
+    - assets/images/categories/transportation.png
+    - assets/images/categories/events.png
+    - assets/images/categories/familyfun.png
+    - assets/images/categories/fishing.png
+    - assets/images/categories/golf.png
+    - assets/images/categories/lodging.png
+    - assets/images/categories/shopping.png
+    - assets/images/categories/shows.png
+    - assets/images/categories/watersport.png
+    - assets/images/categories/wellness.png
+    - assets/images/categories/breakfast.png
+    - assets/images/categories/brewpub.png
+    - assets/images/categories/buffet.png
+    - assets/images/categories/burgers&wings.png
+    - assets/images/categories/delivery.png
+    - assets/images/categories/familydining.png
+    - assets/images/categories/finedining.png
+    - assets/images/categories/oceanfront.png
+    - assets/images/categories/pizza.png
+    - assets/images/categories/seafood.png
+    - assets/images/categories/sportsbar.png
+    - assets/images/categories/steakhouse.png
 
   fonts:
     - family: Actor
