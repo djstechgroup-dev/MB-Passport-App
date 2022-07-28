@@ -1,0 +1,199 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
+import 'package:passportapp/attributes.dart';
+
+class OffersViewHolder extends StatefulWidget {
+  final String imageURL;
+  final String name;
+  final String category;
+  final String distance;
+  const OffersViewHolder({Key? key, required this.imageURL, required this.category, required this.distance, required this.name}) : super(key: key);
+
+  @override
+  State<OffersViewHolder> createState() => _OffersViewHolderState();
+}
+
+class _OffersViewHolderState extends State<OffersViewHolder> {
+  double screenWidth = 0;
+  double screenHeight = 0;
+
+  int used = 0;
+  int remaining = 0;
+  String tagline = " ";
+
+  @override
+  void initState() {
+    super.initState();
+    getOtherData();
+  }
+
+  void getOtherData() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection("Deals").where('imageURL', isEqualTo: widget.imageURL).get();
+    if(mounted) {
+      setState(() {
+        used = snapshot.docs[0]['totalUsed'];
+        remaining = snapshot.docs[0]['totalOffers'] - snapshot.docs[0]['totalUsed'];
+        tagline = snapshot.docs[0]['tagline'];
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _imageClip(widget.imageURL),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 8,
+          ),
+          child: Text(
+            widget.name,
+            style: TextStyle(
+              fontFamily: "Actor",
+              fontSize: screenHeight / 40,
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _labelOffers(0, widget.category),
+            const SizedBox(width: 8,),
+            _labelOffers(1, widget.distance),
+          ],
+        ),
+        Container(
+          height: screenHeight / 35,
+          margin: const EdgeInsets.symmetric(
+            vertical: 4,
+          ),
+          padding: const EdgeInsets.only(
+            top: 2,
+            left: 15,
+            right: 15,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: Attributes.lightBlue,
+          ),
+          child: RichText(
+            text: TextSpan(
+              text: "Used $used times today, ",
+              children: [
+                TextSpan(
+                  text: "$remaining remaining",
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+              style: TextStyle(
+                fontFamily: "Actor",
+                color: Attributes.blue,
+              ),
+            ),
+          ),
+        ),
+        DottedBorder(
+          dashPattern: const [6, 3, 6, 3],
+          child: Container(
+            height: screenHeight / 16,
+            width: screenWidth / 1.6,
+            decoration: BoxDecoration(
+              color: Attributes.yellow,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 4,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                tagline,
+                style: TextStyle(
+                  fontFamily: "Actor",
+                  fontSize: screenHeight / 50,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _labelOffers(int options, String text) {
+    return Container(
+      height: screenHeight / 35,
+      padding: EdgeInsets.only(
+        top: options == 0 ? 2 : 0,
+        bottom: options == 0 ? 4 : 0,
+        left: 15,
+        right: 15,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        color: options == 0 ? const Color(0xFFE1EAFC) : Colors.white,
+        border: Border.all(color: options != 0 ? Colors.black54 : const Color(0xFFE1EAFC)),
+      ),
+      child: Center(
+          child: options == 0 ? Text(
+            text,
+            style: TextStyle(
+              fontFamily: "Actor",
+              color: Attributes.blue,
+            ),
+          ) : Row(
+            children: [
+              Image.asset(
+                "assets/images/pinLocation.png",
+                height: 14,
+              ),
+              Transform.translate(
+                offset: const Offset(8, -1),
+                child: Text(
+                  text,
+                  style: const TextStyle(
+                    fontFamily: "Actor",
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ],
+          )
+      ),
+    );
+  }
+
+  Widget _imageClip(String image) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 4),
+            blurRadius: 4,
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.network(
+          image,
+          fit: BoxFit.fitHeight,
+          width: screenWidth / 1.6,
+        ),
+      ),
+    );
+  }
+}
