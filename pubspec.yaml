@@ -20,6 +20,7 @@ dependencies:
   geocoding: ^2.0.4
   shared_preferences: ^2.0.15
   http: ^0.13.4
+  share_plus: ^4.0.10
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
