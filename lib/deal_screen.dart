@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:passportapp/attributes.dart';
 import 'package:passportapp/model/user.dart';
 import 'package:passportapp/services/prefs_service.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DealScreen extends StatefulWidget {
   final String imageURL;
@@ -252,7 +253,12 @@ class _DealScreenState extends State<DealScreen> {
                               child: saveButtonState == 0 ? _button1("saveIcon", "Save") : _button1("unsaveIcon", "Unsave"),
                             ),
                             _button2("redeemIcon", "Redeem"),
-                            _button1("shareIcon", "Share"),
+                            GestureDetector(
+                              onTap: () {
+                                Share.share("Hey check out this!");
+                              },
+                              child: _button1("shareIcon", "Share"),
+                            ),
                           ],
                         ),
                         _distanceLocation(),
