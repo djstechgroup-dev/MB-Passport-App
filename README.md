@@ -1,6 +1,6 @@
 # passportapp
 
-A new Flutter project.
+A Customer Flutter project.
 
 ## Getting Started
 
