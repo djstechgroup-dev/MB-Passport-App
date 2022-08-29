@@ -85,8 +85,26 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             GestureDetector(
               onTap: () {
                 Feedback.forTap(context);
-                setState(() {
-                  screenState = 1;
+                AuthService().appleSignIn().then((value) {
+                  setState(() {
+                    screenState = 1;
+                  });
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext dialog) {
+                      dialogContext = dialog;
+                      return CustomDialog(
+                        title: "Congratulations",
+                        description: "Log in success! You are now a customer!",
+                        buttonText: "Continue",
+                        tapFunction: () {
+                          Feedback.forTap(context);
+                          Navigator.pop(dialogContext);
+                        },
+                      );
+                    },
+                  );
                 });
               },
               child: _button("appleIcon.png", "Continue with Apple"),
