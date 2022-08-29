@@ -25,6 +25,27 @@ class AuthService {
     return null;
   }
 
+  Future<User?> appleSignIn() async {
+    try {
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      final oAuthProvider = OAuthProvider('apple.com');
+      final appleCredential = oAuthProvider.credential(
+        idToken: credential.identityToken,
+        accessToken: credential.authorizationCode,
+      );
+      final userCredential = await auth.signInWithCredential(appleCredential);
+      return userCredential.user;
+    } catch(e) {
+      throw Exception("Process aborted or failed.");
+    }
+  }
+
   Future<String> getUserToken(String? email) async {
     try {
       UserData user = UserData(
