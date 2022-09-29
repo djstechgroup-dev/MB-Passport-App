@@ -2,9 +2,12 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:passportapp/attributes.dart';
+import 'package:passportapp/model/deal.dart';
 import 'package:passportapp/model/user.dart';
+import 'package:passportapp/services/deal_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   final ValueSetter setStateMain;
@@ -24,18 +27,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int savings = 0;
   double trX = 0;
 
-  //DEAL OF THE DAY
-  String idDeal = "";
-  String imageURL = "";
-  String tagline = "";
-  String category = "";
-  String businessName = "";
-  String distance = "";
+  // //DEAL OF THE DAY
+  // String idDeal = "";
+  // String imageURL = "";
+  // String tagline = "";
+  // String category = "";
+  // String businessName = "";
+  String distance = "<1 Miles";
 
   @override
   void initState() {
     getData();
-    getDealOfTheDay();
     super.initState();
   }
 
@@ -46,28 +48,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  void getDealOfTheDay() async {
-    // DocumentSnapshot snap = await FirebaseFirestore.instance.collection("Attributes").doc("DealOfTheDay").get();
+  Future<DealData> getDealOfTheDay() async {
+    final token = await FirebaseAuth.instance.currentUser?.getIdTokenResult();
+    String dealOfTheDayID = await DealApi().getDealOfTheDay(token?.token);
+    DealData deal = await DealApi().getDealById(token?.token, dealOfTheDayID);
+
+    return deal;
     // setState(() {
-    //   idDeal = snap['id'];
-    // });
+    //   category = deal.category!;
+    //   businessName = deal.businessName!;
+    //   distance = "<1 Miles";
     //
-    // DocumentSnapshot snap2 = await FirebaseFirestore.instance.collection("Deals").doc(idDeal).get();
-    // setState(() {
-    //   imageURL = snap2['imageURL'];
-    //   tagline = snap2['tagline'];
-    // });
-    //
-    // QuerySnapshot snap3 = await FirebaseFirestore.instance.collection("Business").where('imageURL', isEqualTo: imageURL).get();
-    // double lat = double.parse(snap3.docs[0]['address'].split(", ").sublist(0, 1).join(""));
-    // double long = double.parse(snap3.docs[0]['address'].split(", ").sublist(1, 2).join(""));
-    //
-    // setState(() {
-    //   category = snap3.docs[0]['category'];
-    //   businessName = snap3.docs[0]['businessName'];
-    //   distance = (calculateDistance(Attributes.locationData?.latitude, Attributes.locationData?.longitude, lat, long) * 1000 / 1609.344)
-    //       < 99 ? "${(calculateDistance(Attributes.locationData?.latitude, Attributes.locationData?.longitude, lat, long) * 1000 / 1609.344).toStringAsFixed(0)} miles"
-    //       : "99+ miles";
+    //   // (calculateDistance(Attributes.locationData?.latitude, Attributes.locationData?.longitude, lat, long) * 1000 / 1609.344)
+    //   //     < 99 ? "${(calculateDistance(Attributes.locationData?.latitude, Attributes.locationData?.longitude, lat, long) * 1000 / 1609.344).toStringAsFixed(0)} miles"
+    //   //     : "99+ miles";
     // });
   }
 
@@ -216,59 +210,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _dealToReveal() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          height: screenWidth / 2.5,
-          width: screenWidth / 2,
-          padding: const EdgeInsets.all(4),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              imageURL,
-              fit: BoxFit.fitHeight,
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _label(0, category),
-            _label(1, distance),
-          ],
-        ),
-        const SizedBox(height: 4,),
-        Text(
-          tagline,
-          style: TextStyle(
-            fontFamily: "Actor",
-            fontSize: screenHeight / 38,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 8,),
-        Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  Feedback.forTap(context);
-                  widget.setImageURL(imageURL);
-                  widget.setBusinessName(businessName);
-                  widget.setStateMain(6);
-                },
-                child: _dealsButton("saveIcon", "Save"),
+    return FutureBuilder(
+      future: getDealOfTheDay(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if(snapshot.hasData) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: screenWidth / 2.5,
+                width: screenWidth / 2,
+                padding: const EdgeInsets.all(4),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    snapshot.data.imageURL ?? "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
               ),
-            ),
-            Expanded(
-              child: _dealsButton("shareIcon", "Share"),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8,),
-      ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _label(0, snapshot.data.category),
+                  _label(1, distance),
+                ],
+              ),
+              const SizedBox(height: 4,),
+              Text(
+                snapshot.data.tagline,
+                style: TextStyle(
+                  fontFamily: "Actor",
+                  fontSize: screenHeight / 38,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8,),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Feedback.forTap(context);
+                        widget.setImageURL(snapshot.data.imageURL ?? "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg");
+                        widget.setBusinessName(snapshot.data.businessName);
+                        widget.setStateMain(6);
+                      },
+                      child: _dealsButton("saveIcon", "Save"),
+                    ),
+                  ),
+                  Expanded(
+                    child: _dealsButton("shareIcon", "Share"),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8,),
+            ],
+          );
+        } else {
+          return const SizedBox();
+        }
+      }
     );
   }
 
