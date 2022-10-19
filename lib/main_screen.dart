@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:passportapp/account_tabs/account_information.dart';
 import 'package:passportapp/account_tabs/deals_history.dart';
 import 'package:passportapp/account_tabs/live_chat.dart';
@@ -47,6 +48,14 @@ class _MainScreenState extends State<MainScreen> {
   List<String> iconAssetsFilled = ["filled_home", "filled_search", "filled_redeem", "filled_profile"];
   List<String> iconAssetsOutlined = ["outlined_home", "outlined_search", "outlined_redeem", "outlined_profile"];
   List<String> pages = ["Home", "Search", "Redeem", "Profile"];
+
+  @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Attributes.blue,
+    ));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +117,9 @@ class _MainScreenState extends State<MainScreen> {
           setBusinessName: (v) => setState(() {businessName = v;}),
         );
         String? name = FirebaseAuth.instance.currentUser?.displayName;
+        List<String>? words = name?.split(" ");
         setState(() {
-          appBarText = name!;
+          appBarText = words![0];
           appbarState = 0;
           backButtonState = 0;
           searchKey = "";
@@ -188,36 +198,38 @@ class _MainScreenState extends State<MainScreen> {
         break;
     }
     return Scaffold(
-      body: SizedBox(
-        height: screenHeight,
-        width: screenWidth,
-        child: Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                top: appbarHeight,
-              ),
-              child: body,
-            ),
-            selectedScreen == 6 ? Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: screenWidth / 20,
-                vertical: screenHeight / 40,
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  Feedback.forTap(context);
-                  setState(() {
-                    selectedScreen = backButtonState == 0 ? 2 : (backButtonState == 1 ? 0 : 5);
-                  });
-                },
-                child: Image.asset(
-                  "assets/images/backButton.png",
-                  width: screenWidth / 15,
+      body: SafeArea(
+        child: SizedBox(
+          height: screenHeight,
+          width: screenWidth,
+          child: Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.only(
+                  top: appbarHeight,
                 ),
+                child: body,
               ),
-            ) : _appBar(appBarText),
-          ],
+              selectedScreen == 6 ? Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth / 20,
+                  vertical: screenHeight / 40,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    Feedback.forTap(context);
+                    setState(() {
+                      selectedScreen = backButtonState == 0 ? 2 : (backButtonState == 1 ? 0 : 5);
+                    });
+                  },
+                  child: Image.asset(
+                    "assets/images/backButton.png",
+                    width: screenWidth / 15,
+                  ),
+                ),
+              ) : _appBar(appBarText),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: _bottomNavigation(),
@@ -254,23 +266,28 @@ class _MainScreenState extends State<MainScreen> {
           ),
           _searchBar(),
         ],
-      ) : Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      ) : Stack(
         children: [
-          Text(
-            text,
-            style: TextStyle(
-              fontFamily: "Actor",
-              fontSize: screenHeight / 18,
-              color: Colors.white,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              text,
+              style: TextStyle(
+                fontFamily: "Actor",
+                fontSize: screenHeight / 18,
+                color: Colors.white,
+              ),
             ),
           ),
-          Transform.translate(
-            offset: const Offset(0, 10),
-            child: Wrap(
-              children: [
-                _profilePicture(),
-              ],
+          Align(
+            alignment: Alignment.centerRight,
+            child: Transform.translate(
+              offset: const Offset(0, 10),
+              child: Wrap(
+                children: [
+                  _profilePicture(),
+                ],
+              ),
             ),
           ),
         ],
