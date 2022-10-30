@@ -17,7 +17,7 @@ class NotificationService {
 
   Future<void> initNotification() async {
     const AndroidInitializationSettings androidInitializationSettings =
-    AndroidInitializationSettings('@drawable/ic_myrtlebeachpassport');
+    AndroidInitializationSettings('@drawable/launcher_icon');
     //Darwin for IOS
     final DarwinInitializationSettings initializationSettingsDarwin =
     DarwinInitializationSettings(
@@ -69,7 +69,7 @@ class NotificationService {
           importance: Importance.max,
           priority: Priority.max,
           enableLights: true,
-          icon: '@drawable/ic_myrtlebeachpassport',
+          icon: '@drawable/launcher_icon',
           color: Colors.white,
           ongoing: false,
         ),
