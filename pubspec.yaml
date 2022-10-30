@@ -1,7 +1,7 @@
 name: passportapp
 description: A new Flutter project.
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -12,10 +12,10 @@ dependencies:
     sdk: flutter
 
   dotted_border: ^2.0.0+2
-  firebase_core: ^1.19.2
-  cloud_firestore: ^3.3.0
-  firebase_auth: ^3.4.2
-  google_sign_in: ^5.4.0
+  firebase_core: ^2.1.1
+  cloud_firestore: ^4.0.3
+  firebase_auth: ^4.1.0
+  google_sign_in: ^5.4.2
   sign_in_with_apple: ^4.1.0
   location: ^4.4.0
   geocoding: ^2.0.4
@@ -24,6 +24,8 @@ dependencies:
   share_plus: ^4.0.10
   cupertino_icons: ^1.0.2
   flutter_email_sender: ^5.1.0
+  firebase_messaging: ^14.0.3
+  flutter_local_notifications: ^12.0.3
 
 dev_dependencies:
   flutter_test:
